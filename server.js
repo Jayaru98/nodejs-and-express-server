@@ -26,10 +26,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use('/subdir',express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
-});
+app.use("/", require("./routes/root"));
+app.use("/subdir", require("./routes/subdir"));
+app.use("/employees", require("./routes/api/employees"));
+
 
 app.get("*", (req, res) => {
   res.status(404);
